@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+
+type Position = {x: number, y: number};
 class MyScene extends Phaser.Scene {
     preload() {
         // Load an image asset
@@ -14,7 +16,7 @@ class MyScene extends Phaser.Scene {
         // Add the image to the scene
 
         // Define the track
-        const track = [
+        const track: Position[] = [
             { x: 118, y: 20 },
             { x: 118, y: 90 },
             { x: 850, y: 90 },
@@ -41,8 +43,24 @@ class MyScene extends Phaser.Scene {
             { x: 730, y: 999 },
         ];
 
-        const speed = 800; // pixels per second
+        const speed = 400; // pixels per second
 
+        let bloonCount = 0;
+
+        const spawnEvent = this.time.addEvent({
+            delay: 1000, // 2000 ms = 2 seconds
+            callback: () => {
+                bloonCount++;
+                if (bloonCount <= 15)
+                    this.spawnBloon(track, speed);
+                else
+                    spawnEvent.remove();
+            },
+            loop: true
+        });
+    }
+
+    private spawnBloon(track: Position[], speed: number) {
         const bloon = this.add.image(track[0].x, track[0].y, 'myImage');
         // Add a tween for each segment of the track
         let totalDuration = 0; // Total duration of all tweens so far
@@ -56,8 +74,8 @@ class MyScene extends Phaser.Scene {
 
             this.tweens.add({
                 targets: bloon,
-                x: { value: track[i + 1].x, duration: duration, ease: 'None' },
-                y: { value: track[i + 1].y, duration: duration, ease: 'None' },
+                x: {value: track[i + 1].x, duration: duration, ease: 'None'},
+                y: {value: track[i + 1].y, duration: duration, ease: 'None'},
                 delay: totalDuration, // Delay each tween to create a sequence
             });
 

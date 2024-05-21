@@ -13,7 +13,7 @@ class MyScene extends Phaser.Scene {
         // Load an image asset
         this.load.image('background', 'assets/background-3-3.png');
         this.load.image('myImage', 'assets/Red_Bloon.webp');
-        this.load.image('dart-monkey', 'assets/dart-monkey.svg');
+        this.load.image('dart-monkey', 'assets/dart-monkey.png');
         this.load.image('dart', 'assets/dart.png');
     }
 
